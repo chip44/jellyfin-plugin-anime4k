@@ -10,7 +10,12 @@ type UpscalerState = {
 const state: UpscalerState = {};
 
 export function attach(video: HTMLVideoElement): void {
-  if (state.video) return;
+  if (video === state.video) {
+    return;
+  } else if (state.video) {
+    // detach if upscaler state exists but attached to a different video
+    detach();
+  }
 
   const canvas = document.createElement('canvas');
   canvas.classList.add('htmlvideoplayer');
