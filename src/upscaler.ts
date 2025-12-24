@@ -51,7 +51,7 @@ function attach(): void {
   const canvas = document.createElement('canvas');
   canvas.classList.add('htmlvideoplayer');
   canvas.style.height = 'auto';
-  canvas.style.width = `min(100%, 100vh * ${canvas.width} / ${canvas.height})`;
+  canvas.style.width = `min(100%, 100vh * ${state.video.videoWidth} / ${state.video.videoHeight})`;
   canvas.style.setProperty('margin', '0 auto', 'important');
 
   // move the video out of view instead of disabling it, because otherwise the subtitles are automatically turned off
