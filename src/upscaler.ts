@@ -88,7 +88,15 @@ function detach(): void {
 }
 
 function attachAndSync(video: HTMLVideoElement): void {
+  console.log('anime4k: attachsync');
+
+  // detach first if different video was loaded
+  if (state.video !== video) {
+    detach();
+  }
+
   state.video = video;
+
   attach();
   if (isPlaying(video)) start();
   else loadSingleFrame();
