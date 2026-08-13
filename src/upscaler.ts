@@ -28,8 +28,6 @@ let state: UpscalerState = {
 };
 
 export function setPreset(preset: Anime4KPreset): void {
-  console.log('anime4k: preset', preset);
-
   state.selectedPreset = preset;
 
   detach();
@@ -45,8 +43,9 @@ export function getSelectedPreset(): Anime4KPreset {
 }
 
 function attach(): void {
-  if (state.kind === 'attached' || !state.video || state.selectedPreset === PRESETS['Disabled']) return;
-  console.log('anime4k: attach');
+  if (state.kind === 'attached' || !state.video || state.selectedPreset === PRESETS['Disabled']) {
+    return;
+  }
 
   const canvas = document.createElement('canvas');
   canvas.classList.add('htmlvideoplayer');
@@ -59,7 +58,7 @@ function attach(): void {
   state.video.style.left = '-9999px';
   state.video.before(canvas);
 
-  const upscaler = new Anime4KJS.VideoUpscaler(state.targetFps, state.selectedPreset);
+  const upscaler = new Anime4KJS.VideoUpscaler(state.selectedPreset, state.targetFps);
   upscaler.attachVideo(state.video, canvas);
 
   state = {
@@ -73,7 +72,6 @@ function attach(): void {
 
 function detach(): void {
   if (state.kind !== 'attached') return;
-  console.log('anime4k: detach');
 
   state.upscaler.detachVideo();
   state.canvas.remove();
@@ -88,8 +86,6 @@ function detach(): void {
 }
 
 function attachAndSync(video: HTMLVideoElement): void {
-  console.log('anime4k: attachsync');
-
   // detach first if different video was loaded
   if (state.video !== video) {
     detach();
@@ -104,27 +100,23 @@ function attachAndSync(video: HTMLVideoElement): void {
 
 function start(): void {
   if (state.kind !== 'attached') return;
-  console.log('anime4k: start');
   state.upscaler.start();
   state.canvas.style.visibility = 'visible';
 }
 
 function stop(): void {
   if (state.kind !== 'attached') return;
-  console.log('anime4k: stop');
   state.upscaler.stop();
 }
 
 function pause(): void {
   if (state.kind !== 'attached') return;
-  console.log('anime4k: pause');
   state.upscaler.stop();
   state.canvas.style.visibility = 'visible';
 }
 
 function loadSingleFrame(): void {
   if (state.kind !== 'attached') return;
-  console.log('anime4k: loadsingleframe');
   start();
   pause();
 }

@@ -1,12 +1,10 @@
-// eslint-disable unicorn/no-abusive-eslint-disable
-/* eslint-disable */
-
 /*
  * source: https://github.com/jellyfin/jellyfin-web/blob/master/src/components/actionSheet/actionSheet.ts
  * modified to remove unneeded dependencies.
  */
 
 import escapeHtml from 'escape-html';
+
 import dom from '../../Jellyfin/src/utils/dom';
 
 const layoutManager = {
@@ -330,7 +328,10 @@ export function show(options: Options) {
     let isResolved = false;
 
     dlg.addEventListener('click', function (e) {
-      const actionSheetMenuItem = dom.parentWithClass(e.target as HTMLElement, 'actionSheetMenuItem');
+      const actionSheetMenuItem = dom.parentWithClass(
+        e.target as HTMLElement,
+        'actionSheetMenuItem',
+      );
 
       if (actionSheetMenuItem) {
         selectedId = actionSheetMenuItem.getAttribute('data-id');
@@ -382,7 +383,9 @@ export function show(options: Options) {
     });
 
     const pos =
-      options.positionTo && dialogOptions.size !== 'fullscreen' ? getPosition(options.positionTo, options, dlg) : null;
+      options.positionTo && dialogOptions.size !== 'fullscreen'
+        ? getPosition(options.positionTo, options, dlg)
+        : null;
 
     if (pos) {
       dlg.style.position = 'fixed';
@@ -396,5 +399,3 @@ export function show(options: Options) {
 export default {
   show: show,
 };
-
-/* eslint-enable */

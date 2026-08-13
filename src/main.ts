@@ -1,4 +1,5 @@
 import throttle from 'lodash.throttle';
+
 import * as Anime4KJS from '../Anime4KJS/src';
 import { EventType } from '../Jellyfin/src/constants/eventType';
 import Events from '../Jellyfin/src/utils/events';
@@ -18,12 +19,9 @@ function init(): void {
     EventType.SHOW_VIDEO_OSD,
     throttle((_, ...args) => {
       if (args[0] !== true) return;
-      console.log('anime4k: osd');
 
       const osdControls = [...document.body.querySelectorAll('.osdControls')].at(-1);
-      if (!osdControls) return;
-
-      const firstButton = osdControls.querySelector(':scope > .buttons > button');
+      const firstButton = osdControls?.querySelector(':scope > .buttons > button');
       if (!firstButton) return;
 
       const playerButton = new PlayerButton('anime4kButton', osdControls).render();

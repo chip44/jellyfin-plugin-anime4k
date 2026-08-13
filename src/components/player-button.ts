@@ -3,13 +3,16 @@ import { getSelectedPreset, setPreset } from '../upscaler';
 import actionsheet from './action-sheet';
 
 export class PlayerButton {
-  constructor(
-    private id: string,
-    private container: Element = document.body,
-  ) {}
+  private id: string;
+  private container: Element;
+
+  constructor(id: string, container: Element = document.body) {
+    this.id = id;
+    this.container = container;
+  }
 
   public render(): Element | undefined {
-    if (this.container.querySelector(`#${this.id}`)) return;
+    if (this.container.querySelector(`#${this.id}`)) return undefined;
 
     const button = this.build();
 
@@ -21,7 +24,7 @@ export class PlayerButton {
         selected: preset === selectedPreset,
       }));
 
-      actionsheet.show({
+      void actionsheet.show({
         title: 'Anime4K Presets',
         items: menuItems,
         callback: (preset) => {

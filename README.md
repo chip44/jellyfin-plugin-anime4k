@@ -1,15 +1,12 @@
 # Jellyfin Anime4K Plugin
 
-A [Jellyfin](https://jellyfin.org/) plugin that adds support for [Anime4K](https://github.com/bloc97/Anime4K) shaders in
-the Jellyfin web video player.
+A [Jellyfin](https://jellyfin.org/) plugin that adds support for [Anime4K](https://github.com/bloc97/Anime4K) shaders in the Jellyfin web video player.
 
-The shaders run entirely on the **client side**, so a sufficiently powerful GPU and a browser with WebGL support are
-required.
+The shaders run entirely on the **client side** (using [Anime4K.js](https://github.com/monyone/Anime4K.js)), so a sufficiently powerful GPU and a browser with WebGL support are required.
 
 ## Installation
 
-Use a plugin that allows JavaScript injection (such as
-[JavaScript Injector](https://github.com/n00bcodr/Jellyfin-JavaScript-Injector)) and add the following snippet:
+Use a plugin that allows JavaScript injection (such as [JavaScript Injector](https://github.com/n00bcodr/Jellyfin-JavaScript-Injector)) and add the following snippet:
 
 ```javascript
 (function () {
@@ -34,13 +31,13 @@ git submodule update --init --depth=1
 2. Install dependencies:
 
 ```sh
-npm i
+pnpm install
 ```
 
 3. Run dev server:
 
 ```sh
-npm run dev
+pnpm run dev
 ```
 
 4. In the injected JavaScript snippet, point the URL to your dev server:

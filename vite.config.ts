@@ -1,32 +1,15 @@
 import { defineConfig } from 'vite';
-import { run } from 'vite-plugin-run';
 
 export default defineConfig(({ mode }) => {
   return {
     build: {
-      minify: mode === 'production',
       lib: {
         entry: 'src/main.ts',
         formats: ['iife'],
         name: 'Anime4KPlugin',
-        fileName: (_, entryName) => `${entryName}.js`,
+        fileName: () => 'main.js',
       },
+      minify: mode === 'production',
     },
-    esbuild: {
-      pure: mode === 'production' ? ['console.log'] : [],
-    },
-    plugins: [
-      run({
-        silent: false,
-        input: [
-          {
-            name: 'build',
-            run: ['vite', 'build', '--mode', 'development'],
-            pattern: ['src/**/*'],
-            build: false,
-          },
-        ],
-      }),
-    ],
   };
 });
