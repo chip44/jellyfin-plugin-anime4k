@@ -93,6 +93,23 @@ function attachAndSync(video: HTMLVideoElement): void {
 
   state.video = video;
 
+  // Wait for video metadata to be loaded before attaching
+  // This fixes the issue where video starts at 00:00 with preset enabled
+  // but videoWidth/videoHeight are 0, causing black video
+  if (video.readyState < 1) {
+    // HAVE_METADATA = 1
+    const onLoadedMetadata = () => {
+      video.removeEventListener('loadedmetadata', onLoadedMetadata);
+      attachAndSyncInternal(video);
+    };
+    video.addEventListener('loadedmetadata', onLoadedMetadata);
+    return;
+  }
+
+  attachAndSyncInternal(video);
+}
+
+function attachAndSyncInternal(video: HTMLVideoElement): void {
   attach();
   if (isPlaying(video)) start();
   else loadSingleFrame();
