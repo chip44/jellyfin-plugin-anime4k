@@ -1,6 +1,6 @@
 import * as Anime4KJS from '../Anime4KJS/src';
 import { PRESETS, type Anime4KPreset } from './presets';
-import { isPlaying, isTargetVideo } from './utils';
+import { isTargetVideo } from './utils';
 
 type UpscalerDetachedState = {
   kind: 'detached';
@@ -96,22 +96,22 @@ function attachAndSync(video: HTMLVideoElement): void {
   // Wait for video metadata to be loaded before attaching
   // This fixes the issue where video starts at 00:00 with preset enabled
   // but videoWidth/videoHeight are 0, causing black video
-  if (video.readyState < 1) {
+  if (video.readyState >= 1) {
     // HAVE_METADATA = 1
-    const onLoadedMetadata = () => {
-      video.removeEventListener('loadedmetadata', onLoadedMetadata);
-      attachAndSyncInternal(video);
-    };
-    video.addEventListener('loadedmetadata', onLoadedMetadata);
+    attachAndSyncInternal(video);
     return;
   }
 
-  attachAndSyncInternal(video);
+  const onLoadedMetadata = () => {
+    video.removeEventListener('loadedmetadata', onLoadedMetadata);
+    attachAndSyncInternal(video);
+  };
+  video.addEventListener('loadedmetadata', onLoadedMetadata);
 }
 
 function attachAndSyncInternal(video: HTMLVideoElement): void {
   attach();
-  if (isPlaying(video)) start();
+  if (!video.paused && !video.ended && video.readyState > 2) start();
   else loadSingleFrame();
 }
 
